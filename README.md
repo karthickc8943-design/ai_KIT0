@@ -1,130 +1,88 @@
-AI0730 - JARVIS Modern Local AI Assistant
+# AI0730 - JARVIS Modern Local AI Assistant
 
 JARVIS is a local-first AI assistant designed for daily productivity workflows, featuring a modern chat interface, voice interaction, automation tools, and multimodal capabilities.
 
+---
+
+## Features
+
+### 1) Modern Chat Interface
+
+* ChatGPT-style UI (`modern_chat.py`)
+* Compact input row with:
+
+  * message box
+  * attach icon (`📎`)
+  * send button
+* In-chat previews for generated images and converted files
+* Auto task detection badge (`Detected: ...`)
 
 ---
 
-Features
+### 2) AI Routing and System Actions
 
-1) Modern Chat Interface
+* Fast pattern-based routing with AI fallback (`command_router.py`, `core.py`)
+* System automation (`system_automation.py`) including:
 
-ChatGPT-style UI (modern_chat.py)
-
-Compact input row with:
-
-message box
-
-attach icon (📎)
-
-send button
-
-
-In-chat previews for generated images and converted files
-
-Auto task detection badge (Detected: ...)
-
-
+  * Opening desktop applications
+  * Media controls
+  * Calendar actions
+  * Screenshot, lock, time/date, jokes
 
 ---
 
-2) AI Routing and System Actions
+### 3) Voice Assistant Behavior
 
-Fast pattern-based routing with AI fallback (command_router.py, core.py)
+* Integrated voice controls in UI
+* Wake/sleep conversation loop
+* Features:
 
-System automation (system_automation.py) including:
-
-Opening desktop applications
-
-Media controls
-
-Calendar actions
-
-Screenshot, lock, time/date, jokes
-
-
-
+  * Wake phrase activation
+  * Continuous conversation while active
+  * Auto sleep after silence timeout
+  * Manual sleep/shutdown phrases
 
 ---
 
-3) Voice Assistant Behavior
+### 4) Local Image Generation (ComfyUI)
 
-Integrated voice controls in UI
+* Fully local image generation via ComfyUI
+* Workflow:
 
-Wake/sleep conversation loop
-
-Features:
-
-Wake phrase activation
-
-Continuous conversation while active
-
-Auto sleep after silence timeout
-
-Manual sleep/shutdown phrases
-
-
-
+  * Health check (`/system_stats`)
+  * Queue prompt (`/prompt`)
+  * Poll results (`/history/{prompt_id}`)
+  * Fetch image (`/view`)
 
 ---
 
-4) Local Image Generation (ComfyUI)
+### 5) File Intelligence
 
-Fully local image generation via ComfyUI
+* Supports:
 
-Workflow:
+  * `.txt`, `.docx`, `.csv`, `.xlsx`, code files
+* PDF processing:
 
-Health check (/system_stats)
-
-Queue prompt (/prompt)
-
-Poll results (/history/{prompt_id})
-
-Fetch image (/view)
-
-
-
+  * Direct text extraction
+  * OCR fallback for scanned PDFs (if supported tools installed)
 
 ---
 
-5) File Intelligence
+### 6) YouTube and Web Summarization
 
-Supports:
+* YouTube:
 
-.txt, .docx, .csv, .xlsx, code files
+  * Transcript → summary
+  * Multi-fallback (API + `yt-dlp`)
+* Web:
 
-
-PDF processing:
-
-Direct text extraction
-
-OCR fallback for scanned PDFs (if supported tools installed)
-
-
-
+  * URL fetch → text extraction → summary
 
 ---
 
-6) YouTube and Web Summarization
+## Project Structure
 
-YouTube:
-
-Transcript → summary
-
-Multi-fallback (API + yt-dlp)
-
-
-Web:
-
-URL fetch → text extraction → summary
-
-
-
-
----
-
-Project Structure
-
+```
 ai1/
 ├── __init__.py
 ├── chat_memory.py
@@ -142,33 +100,28 @@ ai1/
 ├── video_analysis.py
 ├── web_search.py
 └── README.md
+```
 
-Entry Scripts
+### Entry Scripts
 
-modern_chat.py → primary UI
-
-ai_chat.py → legacy UI and shared functions
-
-
+* `modern_chat.py` → primary UI
+* `ai_chat.py` → legacy UI and shared functions
 
 ---
 
-Environment and Requirements
+## Environment and Requirements
 
-Recommended Platform
+### Recommended Platform
 
-Linux (Ubuntu-based preferred)
-
-NVIDIA GPU (optional, recommended)
-
-Python (Conda environment recommended)
-
-
+* Linux (Ubuntu-based preferred)
+* NVIDIA GPU (optional, recommended)
+* Python (Conda environment recommended)
 
 ---
 
-Core Python Packages
+### Core Python Packages
 
+```
 gradiorequests
 pillow
 pytesseract
@@ -182,158 +135,172 @@ torch
 torchvision
 torchaudio
 torchsde
-
+```
 
 ---
 
-System Tools (Recommended)
+### System Tools (Recommended)
 
+```
 ffmpeg
 tesseract-ocr
 poppler-utils (pdftoppm)
-
+```
 
 ---
 
-Setup
+## Setup
 
-1) Clone Repository
+### 1) Clone Repository
 
+```bash
 git clone https://github.com/karthickc8943-design/ai0730.git
 cd ai0730
-
+```
 
 ---
 
-2) Install Dependencies
+### 2) Install Dependencies
 
+```bash
 python -m pip install gradio requests pillow pytesseract PyPDF2 python-docx pandas faster-whisper youtube-transcript-api yt-dlp
+```
 
 If facing network/DNS issues:
 
+```bash
 python -m pip install <package> -i https://pypi.tuna.tsinghua.edu.cn/simple --trusted-host pypi.tuna.tsinghua.edu.cn
-
+```
 
 ---
 
-3) Setup ComfyUI
+### 3) Setup ComfyUI
 
+```bash
 cd ~/ComfyUI
 python main.py --listen 127.0.0.1 --port 8188
+```
 
 Optional:
 
+```bash
 export COMFYUI_URL="http://127.0.0.1:8188"
-
+```
 
 ---
 
-Running the Application
+## Running the Application
 
+```bash
 python modern_chat.py
+```
 
 Open in browser:
 
+```
 http://localhost:7866
-
+```
 
 ---
 
-Auto Mode Behavior
+## Auto Mode Behavior
 
 The assistant automatically detects intent from text and attachments.
 
 Examples:
 
-generate an image of ... → image generation
-
-Upload image + analyze image text → OCR
-
-Upload PDF + summarize short → file summary
-
-summarize this youtube video <url> → video summary
-
-<url> → web article summary
-
+* `generate an image of ...` → image generation
+* Upload image + `analyze image text` → OCR
+* Upload PDF + `summarize short` → file summary
+* `summarize this youtube video <url>` → video summary
+* `<url>` → web article summary
 
 Detected task is shown in UI badge.
 
+---
+
+## Voice Behavior
+
+* Starts in sleep mode
+* Activates on wake phrase
+* Ignores input while sleeping
+* Supports follow-up conversation
+* Auto sleep after inactivity
+* Manual sleep and shutdown supported
 
 ---
 
-Voice Behavior
+## Local Image Generation Notes
 
-Starts in sleep mode
+* Uses ComfyUI locally
+* Default model:
 
-Activates on wake phrase
-
-Ignores input while sleeping
-
-Supports follow-up conversation
-
-Auto sleep after inactivity
-
-Manual sleep and shutdown supported
-
-
-
----
-
-Local Image Generation Notes
-
-Uses ComfyUI locally
-
-Default model:
-
-
+```
 v1-5-pruned-emaonly.safetensors
+```
 
 If different, update the checkpoint name in workflow configuration.
 
-
 ---
 
-Troubleshooting
+## Troubleshooting
 
-ComfyUI Connection Error
+### ComfyUI Connection Error
 
+```
 Failed to establish connection: 127.0.0.1:8188
+```
 
 Fix:
 
+```bash
 curl http://127.0.0.1:8188/system_stats
-
+```
 
 ---
 
-Missing Dependencies
+### Missing Dependencies
 
+```bash
 python -m pip install torchvision torchaudio torchsde
-
+```
 
 ---
 
-Transformers Version Issues
+### Transformers Version Issues
 
+```bash
 python -m pip install --force-reinstall --no-cache-dir "transformers==4.57.3" "huggingface-hub==0.36.2"
-
-
----
-
-YouTube Transcript Issues
-
-API blocked → fallback to yt-dlp
-
-If both fail → captions unavailable
-
-
+```
 
 ---
 
-Security and Privacy
+### YouTube Transcript Issues
 
-Designed for local usage
+* API blocked → fallback to `yt-dlp`
+* If both fail → captions unavailable
 
-Image generation runs locally via ComfyUI
+---
 
-External requests used for web and YouTube features
+## Security and Privacy
+
+* Designed for local usage
+* Image generation runs locally via ComfyUI
+* External requests used for web and YouTube features
+* Do not commit secrets or private files
+
+---
+
+## Development Notes
+
+* Core logic inside `ai1/`
+* `modern_chat.py` → main UI layer
+* `ai_chat.py` → legacy + reusable functions
+* Keep modules separated and maintainable
+
+---
+
+## License
+
+MIT License
+See `LICENSE` file for details
